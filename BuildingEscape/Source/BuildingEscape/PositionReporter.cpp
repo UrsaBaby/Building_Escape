@@ -11,6 +11,7 @@ UPositionReporter::UPositionReporter()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	
 }
 
 
@@ -20,7 +21,7 @@ void UPositionReporter::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	UE_LOG(LogTemp, Warning, TEXT("Position reporter reporting for duty!"));
 }
 
 
