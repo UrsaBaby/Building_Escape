@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PositionReporter.h"
+#include "Gameframework/Actor.h"
 
 
 // Sets default values for this component's properties
@@ -21,7 +22,9 @@ void UPositionReporter::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	UE_LOG(LogTemp, Warning, TEXT("Position reporter reporting for duty!"));
+	//GetOwner är en metod för actors. Getowner är en pointer till en actor (vilken som helst) och använd metoden getname som ger namnet i formatet Fstring. Vi skapar en Fstring som tar emot den stringen
+	FString ObjectName = GetOwner()->GetName();
+	UE_LOG(LogTemp, Warning, TEXT("Position reporter reporting for duty! For %s"), *ObjectName);
 }
 
 
