@@ -24,7 +24,8 @@ void UPositionReporter::BeginPlay()
 	// ...
 	//GetOwner är en metod för actors. Getowner är en pointer till en actor (vilken som helst) och använd metoden getname som ger namnet i formatet Fstring. Vi skapar en Fstring som tar emot den stringen
 	FString ObjectName = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("Position reporter reporting for duty! For %s"), *ObjectName);
+	FString ObjectPos = GetOwner()->GetTransform().GetLocation().ToString();
+	UE_LOG(LogTemp, Warning, TEXT("%s is at %s"), *ObjectName, *ObjectPos);
 }
 
 
