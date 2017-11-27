@@ -1,6 +1,7 @@
 // Copyright Ursa Entertainment
 
 #include "OpenDoor.h"
+#include "CoreMinimal.h"
 #include "Gameframework/Actor.h"
 
 // Sets default values for this component's properties
