@@ -1,9 +1,7 @@
 // Copyright Ursa Entertainment
 
 #include "Grabber.h"
-#include "Engine/World.h"
-#include "CoreMinimal.h"
-#include "Gameframework/Actor.h"
+#include "DrawDebugHelpers.h"
 
 #define OUT
 
@@ -44,9 +42,22 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		OUT PlayerViewPointLocation,
 		OUT PlayerViewPointRotation
 	);
-	FString OutLogViewPoint = PlayerViewPointLocation.ToString();
-	FString OutLogRotator = PlayerViewPointRotation.ToString();
-	UE_LOG(LogTemp, Warning, TEXT("ViewPoint is at %s %s"), *OutLogViewPoint, *OutLogRotator);
+
+	/*UE_LOG(LogTemp, Warning, TEXT("ViewPoint is at %s %s"), *PlayerViewPointRotation.ToString(), *PlayerViewPointLocation.ToString());*/
+
+	//draw a red trace to visualise
+	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
+	DrawDebugLine
+	(
+		GetWorld(),
+		PlayerViewPointLocation,
+		LineTraceEnd,
+		FColor(255, 0, 0),
+		false,
+		0.f,
+		0.f,
+		10.f
+	);
 
 	//Rayy-cast out to reach distance
 
