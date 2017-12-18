@@ -3,6 +3,8 @@
 #include "Grabber.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
+#include "components/InputComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 #define OUT
 
@@ -24,8 +26,35 @@ void UGrabber::BeginPlay()
 
 	// ..., *ObjectName, *ObjectPos)
 	UE_LOG(LogTemp, Warning, TEXT("Grabber reporting"));
+
+	//find physicshandler
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+
+	if (PhysicsHandle)
+	{
+		///
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s missing physics handle component"), *GetOwner()->GetName());
+	}
+	if (InputComponent)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Inputcomponent found"));
+		// bind input action
+		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s missing Inputcomponent"), *GetOwner()->GetName());
+	}
 }
 
+void UGrabber::Grab() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab Pressed"));
+}
 
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
