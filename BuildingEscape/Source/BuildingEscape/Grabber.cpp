@@ -15,7 +15,7 @@ UGrabber::UGrabber()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	
 }
 
 
@@ -23,12 +23,21 @@ UGrabber::UGrabber()
 void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
+	FindPhysicsHandleComponent();
+	SetupInputCompenent();
+	
+}
 
-	// ..., *ObjectName, *ObjectPos)
-	UE_LOG(LogTemp, Warning, TEXT("Grabber reporting"));
-
+void UGrabber::FindPhysicsHandleComponent()
+{
 	//find physicshandler
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	
+
+}
+
+void UGrabber::SetupInputCompenent()
+{
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 
 	if (PhysicsHandle)
@@ -50,19 +59,23 @@ void UGrabber::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s missing Inputcomponent"), *GetOwner()->GetName());
 	}
-
-	
-	
 }
 
 void UGrabber::Grab() 
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grab Pressed"));
+
+	// try and reach any actors with physics body collision channel set
+
+	// if we hit something then attach a physics handle
+	//TODO attach physics handle
 }
 
 void UGrabber::Release()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grab released"));
+
+	//TODO release Physics handle
 }
 
 // Called every frame
@@ -71,11 +84,20 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+	//if the physics handle is attached
+		// move object that we are holding
 
+
+	GetFirstPhysicsBodyInReach();
+	
+}
+
+const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
+{
 	//Get player viewpoint
 	FVector PlayerViewPointLocation;
 	FRotator PlayerViewPointRotation;
-	
+
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint
 	(
 		OUT PlayerViewPointLocation,
@@ -86,21 +108,23 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	//draw a red trace to visualise
 	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
-	DrawDebugLine
+
+
+	/*DrawDebugLine
 	(
-		GetWorld(),
-		PlayerViewPointLocation,
-		LineTraceEnd,
-		FColor(255, 0, 0),
-		false,
-		0.f,
-		0.f,
-		10.f
-	);
+	GetWorld(),
+	PlayerViewPointLocation,
+	LineTraceEnd,
+	FColor(255, 0, 0),
+	false,
+	0.f,
+	0.f,
+	10.f
+	); */
 
 	// setup query parameters
 	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-	
+
 
 	//Ray-cast/line trace out to reach distance
 	FHitResult Hit;
@@ -114,12 +138,13 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		TraceParameters
 	);
 	//See what we hit
-	AActor* ActorHit  = Hit.GetActor(); //getactor returns a "pointer" (*) so aactor most have a *
+	AActor* ActorHit = Hit.GetActor(); //getactor returns a "pointer" (*) so aactor most have a *
 
-	if (ActorHit) 
+	if (ActorHit)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("You hit %s"), *(ActorHit->GetName())); //Dereference the pointer by using *
 	}
-	
+
+	return FHitResult();
 }
 
