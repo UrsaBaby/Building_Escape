@@ -1,8 +1,13 @@
+Unreal generated files
 */Build
 */Binaries
 */DerivedDataCache
 */Intermediate
 */Saved
 BuildingEscape/Content/StarterContent/
+
+Visual studio generated Files
 *VC.db
 *.ipch
+*.VC.opendb
+*.sln

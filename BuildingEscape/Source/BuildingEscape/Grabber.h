@@ -42,6 +42,14 @@ private:
 	void Release(); //realease
 
 	void FindPhysicsHandleComponent(); //find attached physics handle
-	void SetupInputCompenent();
-	const FHitResult GetFirstPhysicsBodyInReach();
+
+	void SetupInputCompenent(); //Setup attached input component
+
+	const FHitResult GetFirstPhysicsBodyInReach(); //Return hit for first physics body in reach
+
+	FVector GetPlayerReachLineStart(); //Return current start of reach line
+
+	FVector GetPlayerReachLineEnd(); //Return current end of reach line
 };
+
+
